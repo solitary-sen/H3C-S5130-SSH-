@@ -1,4 +1,4 @@
-# H3C-S5130-SSH-
+#H3C S5130 SSH公匙登录配置
 传统登陆交换机方式为SSH账号密码登陆,口令泄露或口令脚本引用会泄露账号密码从而威胁整个网络安全，故采用密匙对登陆的方式，降低口令泄露风险，从而减少口令泄露风险。
 前言
 传统登陆交换机方式为SSH账号密码登陆,口令泄露或口令脚本引用会泄露账号密码从而威胁整个网络安全，故采用密匙对登陆的方式，降低口令泄露风险，从而减少口令泄露风险。
@@ -33,131 +33,87 @@ The key's randomart image is:
 |   oEo.o*        |
 |  ..   . o       |
 +----[SHA256]-----+
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
 
 
 三、H3C S5130导入公匙
 1、开启S5130 FTP远程登录
 
 <H3C>system-view
-1
 2、开启FTP
 
 [H3C]ftp server enable
-1
 3、建立FTP远程账户 xxx
 
 [H3C]logging
 [H3C]local-user xxx class manage
-1
-2
+
 4、设置FTP密码 xxx
 
 [H3C-luser-manage-kean]password simple xxx
-1
 5、设置该用户服务类型
 
 [H3C-luser-manage-kean]service-type ftp
-1
 6、设置该用户访问路径
 
 [H3C-luser-manage-kean]authorization-attribute work-directory flash:/
-1
 7、设置该用户权限
 
 [H3C-luser-manage-kean]authorization-attribute user-role network-admin
-1
 8、退出
 
 [H3C-luser-manage-kean]exit
-1
 9、FTP登录、上传公匙
 
 10、导入生成公匙（xxx为公匙名 xxx.pub为上传公匙）
 
 [H3C]public-key peer xxx import sshkey xxx.pub
-1
 四、创建H3C S5130公匙登录用户
 1、创建SSH登录用户xxx
 
 [H3C]local-user xxx
-1
 2、创建密码 xxx
 
 [H3C-luser-manage-tjs240]password simple xxx
-1
 3、创建ssh类型
 
 [H3C-luser-manage-tjs240]service-type ssh
-1
 4、创建用户等级
 
 [H3C-luser-manage-tjs240]authorization-attribute user-role level-10
-1
 5、退出
 
 [H3C-luser-manage-tjs240]exit
-1
 6、给创建xxx用户给定公匙xxx
 
 [H3C]ssh user xxx service-type stelnet authentication-type publickey assign publickey xxx
-1
 7、关闭FTP服务
 
 [H3C]undo ftp server enable
-1
 8、退出
 
 [H3C]exit
-1
 五、客户端SSH私匙免密登录测试
 1、登录 xxx为创建的SSH帐号
 
 root@~:~# ssh tjs240@x.x.x.x
-1
 
 
 六、备选资料
 1、删除公匙 xxx创建公匙名
 
 [H3C]undo public-key peer xxx
-1
 2、删除SSH登录用户
 
 [H3C]undo ssh user tjs240
-1
 3、查看SSH登录用户列表
 
 [H3C]display ssh user-information
-1
 4、查看公匙列表
 
 [H3C]display public-key peer brief
-1
 5、H3C官方操作文档
 
 http://www.h3c.com/cn/d_201412/847585_30005_0.htm
-1
 6、有任何疑问可以加我QQ
 
 839359374 或者 邮箱联系我	solitary_sen@163.com
